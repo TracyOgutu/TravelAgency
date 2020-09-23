@@ -5,4 +5,15 @@
 {{block.super}}
 <h1 class='text-center'> Welcome to the Travel Agency</h1>
 
+{%for destination_item in destination%}
+
+<h2>{{destination_item.name}}</h2>
+<h3>{{destination_item.address}}</h3>
+
+{%empty%}
+
+<h2>No destinations added yet</h2>
+
+{%endfor%}
+
 {% endblock %}
