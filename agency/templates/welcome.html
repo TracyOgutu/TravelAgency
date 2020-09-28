@@ -6,8 +6,8 @@
 <h1 class='text-center'> Welcome to the Travel Agency</h1>
 
 {%for destination_item in destination%}
-
-<h2>{{destination_item.name}}</h2>
+<h1>{{destination_item.country}}</h1>
+<h2>{{destination_item.destname}}</h2>
 <h3>{{destination_item.address}}</h3>
 
 {%empty%}

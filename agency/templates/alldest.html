@@ -1,0 +1,36 @@
+{%extends 'base2.html'%}
+{%load static%}
+
+{%block slider%}
+
+{%endblock%}
+
+{% block content %}
+{{block.super}}
+    <!-- popular_destination_area_start  -->
+    <div class="popular_destination_area">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                   
+                </div>
+            </div>
+            <div class="row">
+                {%for dest in all_dest%}
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination">
+                        <div class="thumb">
+                            <img src="{% static 'img/destination/1.png' %}" alt="">
+                        </div>
+                        <div class="content">
+                            <p class="d-flex align-items-center">{{dest.destname}}<a href="{% url 'destination' dest.id %}">View</a> </p>
+                            
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}             
+            </div>
+        </div>
+    </div>
+    <!-- popular_destination_area_end  -->
+    {% endblock %}
