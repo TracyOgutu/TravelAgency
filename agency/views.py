@@ -1,8 +1,12 @@
-from django.shortcuts import render
-from .models import Destination,Country
+from django.shortcuts import render,redirect
+from .models import Destination,Country,Profile
 from django.db.models import Count
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from .forms import NewProfileForm
+from django.contrib import messages
 
 # Create your views here.
 def welcome(request):
@@ -34,4 +38,42 @@ def all_destinations(request):
     except ObjectDoesNotExist:
         raise Http404()
     return render(request,"alldest.html",{"all_dest":all_dest})
+
+@login_required(login_url='/accounts/login/')
+def logout_function(request):
+    logout(request)
+    return redirect('welcome')
+
+@login_required(login_url='/accounts/login/')
+def new_profile(request):
+    '''
+    Used for creating a new profile for the user. It includes a profile photo and a bio
+    '''
+    current_user = request.user
+    if request.method == 'POST':
+        form = NewProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.editor = current_user
+            profile.save()
+        return redirect('welcome')
+
+    else:
+        form = NewProfileForm()
+    return render(request, 'new_profile.html', {"form": form})
+
+@login_required(login_url='/accounts/login/')
+def display_profile(request,user_id):
+    '''
+    View for displaying the profile for a single user
+    '''
+    try:
+        single_profile=Profile.single_profile(user_id)              
+        return render(request,'profiledisplay.html',{"profile":single_profile})
+    except Profile.DoesNotExist:
+        messages.info(request,'The user has not set a profile yet')
+        return redirect('welcome')
+
+
+
 
