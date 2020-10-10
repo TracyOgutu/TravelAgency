@@ -20,7 +20,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="single_destination">
                         <div class="thumb">
-                            <img src="{% static 'img/destination/1.png' %}" alt="">
+                            <img src="{{dest.destination_image.url}}" alt="">
                         </div>
                         <div class="content">
                             <p class="d-flex align-items-center">{{dest.destname}}<a href="{% url 'destination' dest.id %}">View</a> </p>
@@ -34,3 +34,6 @@
     </div>
     <!-- popular_destination_area_end  -->
     {% endblock %}
+    {%block bottom%}
+
+    {%endblock%}
