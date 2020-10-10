@@ -22,5 +22,6 @@ urlpatterns = [
     # path('agency/',('agency.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'',include('agency.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 ]
 
