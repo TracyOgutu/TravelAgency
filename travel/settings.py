@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import cloudinary
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,17 +22,26 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'gd90nepzuh%vt4l!63-tt_o(x6z90ihe=3r!=aexxwui5as^k_'
+SECRET_KEY=config('SECRET_KEY')
+
+cloudinary.config( 
+    cloud_name=config('CLOUD_NAME'), 
+    api_key=config('CLOUD_API_KEY'), 
+    api_secret=config('CLOUD_API_SECRET') 
+)
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'cloudinary',
     'agency',
     'bootstrap4',
     'django.contrib.admin',
@@ -49,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'travel.urls'
@@ -64,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',     
             ],
         },
     },
@@ -119,6 +132,7 @@ USE_L10N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -127,3 +141,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

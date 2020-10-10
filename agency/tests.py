@@ -1,12 +1,12 @@
 from django.test import TestCase
 
 # Create your tests here.
-from .models import Customer,Destination,Package,Order
+from .models import Profile,Destination,Package,Order
 
-class CustomerTestClass(TestCase):
+class ProfileTestClass(TestCase):
     # Set up method
     def setUp(self):
-        self.rita=Customer(name='rita',email='rita@gmail.com')
+        self.rita=Profile(custname='rita',email='rita@gmail.com')
 
     #testing instance
     def test_instance(self):
