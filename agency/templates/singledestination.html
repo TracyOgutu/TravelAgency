@@ -2,12 +2,15 @@
 {%load static%}
 
 {%block slider%}
-<div class="destination_banner_wrap overlay">
-    <div class="destination_text text-center">
-        <h3>{{destination.destname}}</h3>
-        <p>Pixel perfect design with awesome contents</p>
-    </div>
+<div class="destination_banner_wrap overlay" style="background-image: url('{{destination.destination_image.url}}');">
+<!-- <img src="{{destination.destination_image.url}};" style="padding: 340px 0;background-size: cover; background-position: center center;"> -->
+<div class="destination_text text-center">
+    <h3>{{destination.destname}}</h3>
+    
 </div>
+</div>
+   
+
 {%endblock%}
 
 {%block whereto%}

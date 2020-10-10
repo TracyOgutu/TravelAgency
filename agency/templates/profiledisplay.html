@@ -1,0 +1,29 @@
+{%extends 'base2.html'%}
+{%load static %}
+{%load bootstrap4 %}
+{%block slider%}
+
+{%endblock%}
+
+{%block whereto%}
+
+{%endblock%}
+
+{% block content %}
+
+{{block.super}}
+<h1>This is my created profile</h1>
+{%if profile%}
+<h1> Profile </h1>
+
+<img src="{{profile.profile_photo.url}}" alt="profilephoto" style="height:300px;width:300px;"><br>
+<h2>Bio:{{profile.bio}}</h2>
+{%endif%}
+
+
+
+{% endblock %}
+
+{%block bottom%}
+
+{%endblock%}
