@@ -2,33 +2,62 @@
 {%load static%}
 {% block content %}
 {{block.super}}
-    <!-- popular_destination_area_start  -->
-    <div class="popular_destination_area">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <div class="section_title text-center mb_70">
-                        <h3>Popular Destinations</h3>
-                        
-                    </div>
+<!-- popular_destination_area_start  -->
+<div class="popular_destination_area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="section_title text-center mb_70">
+                    <h3>Popular Destinations</h3>
+                    <a href="{%url 'make_review' %}">Submit Review</a>
                 </div>
-            </div>
-            <div class="row">
-                {%for country_item in countries%}
-                <div class="col-lg-4 col-md-6">
-                    <div class="single_destination">
-                        <div class="thumb">
-                            <img src="{{country_item.country_image.url}}" alt="" height="250px" width="300px">
-                        </div>
-                        <div class="content">
-                            <p class="d-flex align-items-center">{{country_item.countryname}}<a href="{% url 'country' country_item.id %}">{{country_item.number_of_destinations}}</a> </p>
-                            
-                        </div>
-                    </div>
-                </div>
-                {%endfor%}             
             </div>
         </div>
+        <div class="row">
+            {%for country_item in countries%}
+            <div class="col-lg-4 col-md-6">
+                <div class="single_destination">
+                    <div class="thumb">
+                        <img src="{{country_item.country_image.url}}" alt="" height="250px" width="300px">
+                    </div>
+                    <div class="content">
+                        <p class="d-flex align-items-center">{{country_item.countryname}}<a
+                                href="{% url 'country' country_item.id %}">{{country_item.number_of_destinations}}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
     </div>
-    <!-- popular_destination_area_end  -->
-    {% endblock %}
+</div>
+<!-- popular_destination_area_end  -->
+{% endblock %}
+
+{%block review%}
+<!-- review area start -->
+<div class="travel_variation_area">
+    <div class="container">
+        <div class="section_title text-center mb_70" style="margin-top: -20%;">
+            <h3>Client Reviews</h3>
+        </div>
+        <div class="row">
+            {%for single_rev in reviews%}
+            <div class="col-lg-4 col-md-6">
+                <div class="single_travel text-center">
+                    <div class="icon">
+                        <img src="{{ single_rev.review_image.url}}" alt=""
+                            style="height:150px;width: 50%;border-radius: 50%;">
+                    </div>
+                    <h3>Author: {{single_rev.reviewer.username}}</h3>
+                    <p>{{single_rev.review}}</p>
+                    <h4>Date:{{single_rev.review_date}}</h4>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+
+<!-- /review_area  -->
+{%endblock%}
