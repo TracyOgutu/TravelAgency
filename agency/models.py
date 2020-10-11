@@ -64,6 +64,12 @@ class Order(models.Model):
     destination=models.ForeignKey(Destination,on_delete=models.CASCADE)
     package=models.ForeignKey(Package,on_delete=models.CASCADE)
 
+class Reviews(models.Model):
+    review_image=cloudinary.models.CloudinaryField('image',null=True,blank=True)
+    reviewer=models.ForeignKey(User,on_delete=models.CASCADE)
+    review=models.CharField(max_length=100)
+    review_date=models.DateTimeField(auto_now_add=True)
+
 
 
 
