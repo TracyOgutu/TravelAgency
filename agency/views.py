@@ -1,20 +1,24 @@
 from django.shortcuts import render,redirect
-from .models import Destination,Country,Profile
+from .models import Destination,Country,Profile,Reviews
 from django.db.models import Count
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-from .forms import NewProfileForm
+from .forms import NewProfileForm,NewReviewForm
 from django.contrib import messages
 
 # Create your views here.
 def welcome(request):
-   
-    countries=Country.objects.annotate(number_of_destinations=Count('destination'))
-    print('........................number of destinations in the country........................')
-    print(countries)
-    return render(request, 'welcome2.html',{"countries":countries})
+    try:
+        countries=Country.objects.annotate(number_of_destinations=Count('destination'))
+        print('........................number of destinations in the country........................')
+        print(countries)
+        allreviews=Reviews.objects.all()
+    except ObjectDoesNotExist:
+        raise Http404()
+
+    return render(request, 'welcome2.html',{"countries":countries,"reviews":allreviews})
 
 def single_country(request,country_id):
     try:
@@ -73,6 +77,25 @@ def display_profile(request,user_id):
     except Profile.DoesNotExist:
         messages.info(request,'The user has not set a profile yet')
         return redirect('welcome')
+
+@login_required(login_url='/accounts/login/')
+def make_review(request):
+    current_user = request.user
+    current_id=request.user.id
+    print('...................I am the current user....................')
+    print(current_id)
+    if request.method == 'POST':
+        form = NewReviewForm(request.POST, request.FILES)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.reviewer = current_user
+            review.save()
+        return redirect('welcome')
+
+    else:
+        form = NewReviewForm()
+    return render(request, 'make_review.html', {"form": form})
+
 
 
 
