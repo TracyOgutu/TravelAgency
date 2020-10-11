@@ -11,6 +11,7 @@ urlpatterns=[
     url(r'^logout/$',views.logout_function,name="logout"),
     url(r'^new/profile$', views.new_profile, name='new_profile'),
     url(r'displayprofile/(\d+)',views.display_profile,name='displayprofile'),
+    url(r'^new/review$', views.make_review, name='make_review'),
    
     
 ]
