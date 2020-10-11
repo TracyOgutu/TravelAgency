@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile
+from .models import Profile,Reviews
 
 class NewProfileForm(forms.ModelForm):
     class Meta:
@@ -8,3 +8,12 @@ class NewProfileForm(forms.ModelForm):
         widgets={
             'tags':forms.CheckboxSelectMultiple(),
         }
+
+class NewReviewForm(forms.ModelForm):
+    class Meta:
+        model=Reviews
+        exclude=['reviewer','review_date',]
+        widgets={
+            'tags':forms.CheckboxSelectMultiple(),
+        }
+
