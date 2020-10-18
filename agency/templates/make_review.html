@@ -12,17 +12,23 @@
 {% block content %}
 
 {{block.super}}
-<h1>This is my review</h1>
-<div>
-    <form action="{%url 'make_review'%}" method="post" enctype="multipart/form-data">
-        {%csrf_token%}
+<div class="card" style="width: 50rem;margin-left: 20%;margin-bottom: 10%;">
+    <div class="card-body">
+      <h5 class="card-title">Review</h5>
+      <div>
+        <form action="{%url 'make_review'%}" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+    
+            {% bootstrap_form form%}
+            <input type="submit" class="btn btn-success btn-lg" value="Post">
+        </form>
+    
+    
+    </div>
+    
+    </div>
+  </div>
 
-        {% bootstrap_form form%}
-        <input type="submit" class="btn btn-success btn-lg" value="Post">
-    </form>
-
-
-</div>
 
 
 {% endblock %}

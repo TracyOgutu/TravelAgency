@@ -10,12 +10,126 @@
 
   {% block styles %}
   {% bootstrap_css %}
+   <!-- <link rel="manifest" href="site.webmanifest"> -->
+   <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}">
+   <!-- Place favicon.ico in the root directory -->
+
+   <!-- CSS here -->
+   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+   <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+   <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+   <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+   <link rel="stylesheet" href="{% static 'css/gijgo.css' %}">
+   <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+   <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+   <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
+   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+
+   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   {% endblock %}
 
 
 </head>
-<body>
-    {% block content %}  {%endblock%}
+<body >
+  <header>
+    <div class="header-area ">
+        <div id="sticky-header" class="main-header-area">
+            <div class="container-fluid">
+                <div class="header_bottom_border">
+                    <div class="row align-items-center">
+                        <div class="col-xl-2 col-lg-2">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="img/logo.png" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6">
+                            <div class="main-menu  d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a class="active" href="{%url 'welcome' %}">Home</a></li>
+                                        <li><a href="#">About</a></li>
+                                        <li><a class="" href="{%url 'alldest' %}">Destinations</a></li>
+                                        <li><a href="#">Contact</a></li>
+
+                                        {% if user.is_authenticated %}
+                                        <ul>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle btn btn-default"
+                                                    data-toggle="dropdown" role="button"
+                                                    aria-expanded="false">{{user.username}} Account
+                                                    <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <li>
+                                                        <a href="{%url 'welcome'%}">Home</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{%url 'new_profile'%}">Create Profile</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{%url 'displayprofile' user.id%}">View Profile</a>
+                                                    </li>
+<!-- 
+                                                    <li>
+                                                        <a href="#">Change Password</a>
+                                                    </li> -->
+                                                    <li>
+                                                        <a href="/logout">Logout</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        {% else %}
+                                        <li>
+                                            <a class='btn btn-default' href="/accounts/register">Create Account</a>
+                                        </li>
+                                        <li>
+                                            <a class='btn btn-default' href="/accounts/login">Login</a>
+                                        </li>
+
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 d-none d-lg-block">
+                            <div class="social_wrap d-flex align-items-center justify-content-end">
+                                <div class="number">
+                                    <p> <i class="fa fa-phone"></i> +254 7------</p>
+                                </div>
+                                <div class="social_links d-none d-xl-block">
+                                    <ul>
+                                        <li><a href="#"> <i class="fa fa-instagram"></i> </a></li>
+                                        <li><a href="#"> <i class="fa fa-linkedin"></i> </a></li>
+                                        <li><a href="#"> <i class="fa fa-facebook"></i> </a></li>
+                                        <!-- <li><a href="#"> <i class="fa fa-google-plus"></i> </a></li> -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seach_icon">
+                            <a data-toggle="modal" data-target="#exampleModalCenter" href="#">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</header>
+    {% block content %}  
+    
+    {%endblock%}
 
 
   {% block scripts %}

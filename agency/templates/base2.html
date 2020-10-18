@@ -61,9 +61,10 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li><a class="active" href="{%url 'welcome' %}">Home</a></li>
-                                            <li><a href="#">About</a></li>
-                                            <li><a class="" href="{%url 'alldest' %}">Destinations</a></l /li>
-                                            <li><a href="#">Contact</a></li>
+                                            <li><a href="{%url 'about' %}">About</a></li>
+                                            <li><a href="{%url 'alldest' %}">Destinations</a></li>
+                                            
+                                            <li><a href="{%url 'contact' %}">Contact</a></li>
 
                                             {% if user.is_authenticated %}
                                             <ul>
@@ -78,10 +79,12 @@
                                                             <a href="{%url 'welcome'%}">Home</a>
                                                         </li>
                                                         <li>
-                                                            <a href="{%url 'new_profile'%}">Create Profile</a>
+                                                            <a href=" {%url 'new_profile'%}">Create Profile</a>
+                                                           
                                                         </li>
                                                         <li>
-                                                            <a href="{%url 'displayprofile' user.id%}">View Profile</a>
+                                                            <a href=" {%url 'displayprofile' user.id%}">View Profile</a>
+                                                           
                                                         </li>
 <!-- 
                                                         <li>

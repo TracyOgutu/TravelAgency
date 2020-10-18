@@ -20,6 +20,14 @@ def welcome(request):
 
     return render(request, 'welcome2.html',{"countries":countries,"reviews":allreviews})
 
+def about(request):
+
+    return render(request,'about.html')
+
+def contact(request):
+
+    return render(request,'contact.html')
+
 def single_country(request,country_id):
     try:
         country = Country.objects.get(id =country_id)

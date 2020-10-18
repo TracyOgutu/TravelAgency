@@ -17,10 +17,11 @@
                         <div class="single_place">
                             <div class="thumb">
                                 <img src="{{ dest_item.destination_image.url}}" alt="">
-                                <a href="#" class="prise">$500</a>
+                                <!-- <a href="#" class="prise">$500</a> -->
                             </div>
                             <div class="place_info">
-                                <a href="{% url 'destination' dest_item.id %}"><h3>{{dest_item.destname}}</h3></a>
+                                <!-- {% url 'destination' dest_item.id %} -->
+                                <a href="#"><h3>{{dest_item.destname}}</h3></a>
                                 <p>{{dest_item.address}}</p>
                                 <div class="rating_days d-flex justify-content-between">
                                     <span class="d-flex justify-content-center align-items-center">
@@ -29,12 +30,12 @@
                                          <i class="fa fa-star"></i> 
                                          <i class="fa fa-star"></i> 
                                          <i class="fa fa-star"></i>
-                                         <a href="#">(20 Review)</a>
+                                         <!-- <a href="#">(20 Review)</a> -->
                                     </span>
-                                    <div class="days">
+                                    <!-- <div class="days">
                                         <i class="fa fa-clock-o"></i>
                                         <a href="#">5 Days</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

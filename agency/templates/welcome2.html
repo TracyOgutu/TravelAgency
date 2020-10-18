@@ -9,7 +9,7 @@
             <div class="col-lg-6">
                 <div class="section_title text-center mb_70">
                     <h3>Popular Destinations</h3>
-                    <a href="{%url 'make_review' %}">Submit Review</a>
+                   
                 </div>
             </div>
         </div>
@@ -40,6 +40,7 @@
     <div class="container">
         <div class="section_title text-center mb_70" style="margin-top: -20%;">
             <h3>Client Reviews</h3>
+          <button class="btn btn-info"><a href="{%url 'make_review' %}">Submit Review</a></button>  
         </div>
         <div class="row">
             {%for single_rev in reviews%}
