@@ -23,8 +23,8 @@
                             <img src="{{dest.destination_image.url}}" alt="" height="250px" width="300px">
                         </div>
                         <div class="content">
-                            <p class="d-flex align-items-center">{{dest.destname}}<a href="#">View</a> </p>
-                            <!-- {% url 'destination' dest.id %} -->
+                            <p class="d-flex align-items-center">{{dest.destname}}<a href="{% url 'destination' dest.id %}">View</a> </p>
+                           
                         </div>
                     </div>
                 </div>

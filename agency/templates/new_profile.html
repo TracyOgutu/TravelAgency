@@ -12,8 +12,24 @@
 {% block content %}
 
 {{block.super}}
-<h1>This is my profile</h1>
-<div >
+<!-- <h1>This is my profile</h1> -->
+<div class="card" style="width: 50rem;margin-left: 20%;margin-bottom: 10%;">
+  <div class="card-body">
+    <h5 class="card-title">Create Profile</h5>
+    <div>
+      <form action="{%url 'new_profile'%}" method="post" enctype="multipart/form-data">
+          {%csrf_token%}
+  
+          {% bootstrap_form form%}
+          <input type="submit" class="btn btn-success btn-lg" value="Post">
+      </form>
+  
+  
+  </div>
+  
+  </div>
+</div>
+<!-- <div >
     <form  action="{%url 'new_profile'%}" method="post" enctype="multipart/form-data">
       {%csrf_token%}
   
@@ -22,7 +38,7 @@
     </form>
   
 
-        </div>
+        </div> -->
 
 
 {% endblock %}

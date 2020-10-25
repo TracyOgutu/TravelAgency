@@ -12,14 +12,59 @@
 {% block content %}
 
 {{block.super}}
-<h1>This is my created profile</h1>
+
+
 {%if profile%}
-<h1> Profile </h1>
 
-<img src="{{profile.profile_photo.url}}" alt="profilephoto" style="height:300px;width:300px;"><br>
-<h2>Bio:{{profile.bio}}</h2>
+<div class="container">
+    <div class="row" style="margin-bottom: 15%;">
+        <div class="col-lg-4">
+            <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+max-width: 70%;
+margin: auto;
+text-align: center;">
+
+                <img src="{{profile.profile_photo.url}}" alt="ProfilePhoto" style="width:100%">
+
+
+            </div>
+
+        </div>
+        <div class="col-lg-8">
+
+<div>
+    <h5>Username: {{user.username}}</h5><br><br>
+    <p class="title" style=" color: grey;
+    font-size: 18px;">Caption: {{profile.bio}}</p>
+</div><br><br>
+
+<div style="display: inline-block;">
+
+    <a style=" text-decoration: none;
+        font-size: 22px;
+        color: black;" href="#"><i class="fa fa-twitter"></i></a>
+    <a style=" text-decoration: none;
+        font-size: 22px;
+        color: black;" href="#"><i class="fa fa-linkedin"></i></a>
+    <a style=" text-decoration: none;
+        font-size: 22px;
+        color: black;" href="#"><i class="fa fa-facebook"></i></a>
+
+</div>
+
+        </div>
+    </div>
+
+</div>
+
+
+{%else%}
+
+<h1>
+    No profile created yet
+</h1>
+
 {%endif%}
-
 
 
 {% endblock %}
