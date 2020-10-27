@@ -1,0 +1,68 @@
+{%extends 'base2.html'%}
+{%load static%}
+
+{%block slider%}
+
+{%endblock%}
+
+{%block whereto%}
+
+<!-- where_togo_area_start  -->
+<div class="where_togo_area">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="form_area">
+                    <h3>WISHLIST</h3>
+                </div>
+            </div>
+            <div class="col-lg-6">
+        
+            </div>
+        </div>
+    </div>
+</div>
+<!-- where_togo_area_end  -->
+{%endblock%}
+
+{% block content %}
+{{block.super}}
+
+    <!-- popular_destination_area_start  -->
+    <div class="popular_destination_area">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                   
+                </div>
+            </div>
+            {%if wishitems%}
+            <div class="row">
+                {%for wish in wishitems%}
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_destination">
+                        <div class="thumb">
+                            <!-- {{dest.destination_image.url}} -->
+                            <img src="{{wish.destination.destination_image.url}}" alt="destphoto" height="250px" width="300px">
+                        </div>
+                        <div class="content">
+                            <p class="d-flex align-items-center">{{wish.destination.destname}}<a href="{% url 'destination' wish.destination.id %}">View</a> </p>
+                            <a href="{%url 'deletefromwishlist' wish.destination.id %}" class="boxed-btn3">Remove</a>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}             
+            </div>
+            {%else%}
+            <div>
+                <h5>You haven't added a destination to your wishlist just yet</h5>
+                <a href="{%url 'alldest' %}" class="boxed-btn3">Explore Now</a>
+            </div>
+            {%endif%}
+        </div>
+    </div>
+    <!-- popular_destination_area_end  -->
+    {% endblock %}
+    {%block bottom%}
+
+    {%endblock%}

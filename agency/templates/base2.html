@@ -87,6 +87,10 @@
                                                             <a href="{%url 'displayprofile' user.id%}">View Profile</a>
                                                            
                                                         </li>
+                                                        <li>
+                                                            <a href="{%url 'displaywishlist'%}">My Wishlist</a>
+                                                           
+                                                        </li>
 <!-- 
                                                         <li>
                                                             <a href="#">Change Password</a>
@@ -188,6 +192,17 @@
 
     </div>
     <!-- slider_area_end -->
+    {%endblock%}
+
+    {%block messages%}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="margin-left:20%;color:brown">{{ message }}</li>
+        {% endfor %}
+    </ul>
+
+    {%endif%}
     {%endblock%}
 
     {%block whereto%}
