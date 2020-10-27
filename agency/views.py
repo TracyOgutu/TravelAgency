@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Destination,Country,Profile,Reviews
+from .models import Destination,Country,Profile,Reviews,Wishlist
 from django.db.models import Count
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from .forms import NewProfileForm,NewReviewForm
 from django.contrib import messages
+from getmac import get_mac_address as gma
 
 # Create your views here.
 def welcome(request):
@@ -104,6 +105,38 @@ def make_review(request):
         form = NewReviewForm()
     return render(request, 'make_review.html', {"form": form})
 
+def displaywishlist(request):
+    try:
+        wishlist_items=Wishlist.objects.filter(user_mac=gma())
+    except Wishlist.DoesNotExist:
+        wishlist_items=[]
+    
+    return render(request,'wishlist.html',{"wishitems":wishlist_items})
+
+
+def addtowishlist(request,id):
+    dest=Destination.objects.get(id=id)
+    try:
+        wishlist_exists=Wishlist.objects.get(user_mac=gma(),destination=dest)
+        messages.info(request,"This destination is already in your wishlist")
+        return redirect("displaywishlist")
+    
+    except Wishlist.DoesNotExist:
+        new_wishlist=Wishlist(destination=dest,user_mac=gma())
+        new_wishlist.save()
+        messages.info(request,"The destination has been added to your wishlist")
+        return redirect('displaywishlist')
+
+def deletefromwishlist(request,id):
+    try:
+        dest_del=Wishlist.objects.get(user_mac=gma(),destination=id)
+        dest_del.delete()
+        messages.info(request,"The destination has been successfully deleted from your wishlist")
+
+        return redirect('displaywishlist')
+    except ObjectDoesNotExist:
+        raise Http404()
+    
 
 
 

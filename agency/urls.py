@@ -14,6 +14,10 @@ urlpatterns=[
     url(r'^new/profile$', views.new_profile, name='new_profile'),
     url(r'displayprofile/(\d+)',views.display_profile,name='displayprofile'),
     url(r'^new/review$', views.make_review, name='make_review'),
+    path('wishlist/',views.displaywishlist,name='displaywishlist'),
+    url(r'addtowishlist/(\d+)',views.addtowishlist,name='addtowishlist'),
+    url(r'deletefromwishlist/(\d+)',views.deletefromwishlist,name='deletefromwishlist'),
+
    
     
 ]
