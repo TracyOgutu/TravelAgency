@@ -70,6 +70,17 @@ class Reviews(models.Model):
     review=models.CharField(max_length=100)
     review_date=models.DateTimeField(auto_now_add=True)
 
+class Wishlist(models.Model):
+    destination=models.ForeignKey(Destination,on_delete=models.CASCADE)
+    user_mac=models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.destination
+
+
+
+
+
 
 
 
