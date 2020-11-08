@@ -53,6 +53,16 @@ class Destination(models.Model):
         alldest=cls.objects.all()
         return alldest
 
+    @classmethod
+    def search_by_destination(cls,search_term):
+        dest_res=cls.objects.filter(destname__icontains=search_term)
+        return dest_res
+
+    @classmethod
+    def search_by_country(cls,search_term):
+        country_res=cls.objects.filter(destincountry__countryname__icontains=search_term)
+        return country_res
+
 
 class Package(models.Model):
     packagename=models.CharField(max_length=30)

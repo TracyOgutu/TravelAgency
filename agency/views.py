@@ -151,7 +151,7 @@ def send_email(request):
     from_email = request.POST.get('email', '')
     if subject and message and from_email:
         try:
-            send_mail(subject, message, from_email, ['beastmater064@gmail.com'])
+            send_mail(subject, message, from_email, ['travelagency477@gmail.com'])
         except BadHeaderError:
             return HttpResponse('Invalid header found.')
         return redirect('welcome')
@@ -166,7 +166,7 @@ def subscribe(request):
     subject = 'Welcome to Travel Agency.'
     message = 'Thank you for subscribing. Anticipate exciting updates on magical destinations! ' 
     user_email=request.POST.get('useremail', '')
-    from_email = 'beastmater064@gmail.com'
+    from_email = 'travelagency477@gmail.com'
     if user_email:
         try:
             send_mail(subject, message, from_email, [user_email])
@@ -180,6 +180,34 @@ def subscribe(request):
         # In reality we'd use a form class
         # to get proper validation errors.
         return HttpResponse('Make sure all fields are entered and valid.')
+
+
+def search_country(request):
+    if 'countrysearch' in request.GET and request.GET["countrysearch"]:
+        search_term=request.GET.get("countrysearch")
+        try:
+            searched_country=Destination.search_by_country(search_term)
+            message = f"{search_term}"
+            return render(request, 'searchcountry.html',{"message":message,"country_results":searched_country})
+            
+        except Destination.DoesNotExist:
+            messages.info(request,'No product found')
+            return redirect('welcome')
+
+    else:
+        messsage="You haven't searched for a specific country"
+        return render(request,'searchcountry.html',{"message":message})
+
+def search_destination(request):
+    if 'destsearch' in request.GET and request.GET["destsearch"]:
+        search_terms=request.GET.get("destsearch")
+        searched_dest=Destination.search_by_destination(search_terms)
+        message=f"{search_terms}"
+        return render(request,'searchdest.html',{"message":message,"dest_results":searched_dest})
+        
+    else:
+        message="You haven't searched for a destination"
+        return render(request,'searchdest.html',{"message":message})
 
 
 

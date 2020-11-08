@@ -130,7 +130,7 @@
                                 </div>
                             </div>
                             <div class="seach_icon">
-                                <a data-toggle="modal" data-target="#exampleModalCenter" href="#">
+                                <a data-toggle="modal" data-target="#destsearch" href="#">
                                     <i class="fa fa-search"></i>
                                 </a>
                             </div>
@@ -220,9 +220,10 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="search_wrap">
-                        <form class="search_form" action="#">
+                        <form class="search_form" action="{%url 'searchcountry' %}">
                             <div class="input_field">
-                                <input type="text" placeholder="Where to go?">
+                                <input type="text" placeholder="Search Country" name="countrysearch"><hr>
+                                 
                             </div>
                             <!-- <div class="input_field">
                                 <input id="datepicker" placeholder="Date">
@@ -234,6 +235,15 @@
                                     <option value="2">Another option</option>
                                 </select>
                             </div> -->
+                            <div class="search_btn">
+                                <button class="boxed-btn4 " type="submit">Search</button>
+                            </div>
+                        </form>
+                        <form class="search_form" action="{%url 'searchdest' %}">
+                            <div class="input_field">
+                                <input type="text" placeholder="Search Destination" name="destsearch">     
+                            </div>
+                           
                             <div class="search_btn">
                                 <button class="boxed-btn4 " type="submit">Search</button>
                             </div>
@@ -540,13 +550,13 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 
 
     <!-- Modal -->
-    <div class="modal fade custom_search_pop" id="exampleModalCenter" tabindex="-1" role="dialog"
+    <div class="modal fade custom_search_pop" id="destsearch" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="serch_form">
-                    <input type="text" placeholder="Search">
-                    <button type="submit">search</button>
+                <form class="serch_form" action="{%url 'searchdest' %}">
+                    <input type="text" placeholder="Search Destination" name="destsearch">
+                    <button type="submit">Search</button>
                 </div>
             </div>
         </div>

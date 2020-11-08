@@ -19,5 +19,6 @@ urlpatterns=[
     url(r'deletefromwishlist/(\d+)',views.deletefromwishlist,name='deletefromwishlist'),
     url(r'^send_email/$',views.send_email, name="send_email"), 
     url(r'^subscribe/$',views.subscribe, name="subscribe"), 
-    
+    url(r'^searchcountry/',views.search_country,name='searchcountry'),  
+     url(r'^searchdestination/',views.search_destination,name='searchdest'),
 ]
