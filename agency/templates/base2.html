@@ -250,6 +250,7 @@
 
     {%block bottom%}
 
+
     <!-- newletter_area_start  -->
     <div class="newletter_area overlay">
         <div class="container">
@@ -264,11 +265,17 @@
                             </div>
                         </div>
                         <div class="col-lg-7">
-                            <div class="mail_form">
-                                <div class="row no-gutters">
+                            <!-- <div class="mail_form"> -->
+                                <form class="mail_form" action="{% url 'subscribe' %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="subject" placeholder="Subject">
+                                <input type="text" name="message" placeholder="Message">
+                                <input type="email" name="email" placeholder="Your email">
+                                <button class="boxed-btn4 " type="submit">Subscribe</button>
+                                <!-- <div class="row no-gutters">
                                     <div class="col-lg-9 col-md-8">
                                         <div class="newsletter_field">
-                                            <input type="email" placeholder="Your mail">
+                                            <input type="email" name="email" placeholder="Your email">
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-4">
@@ -276,8 +283,9 @@
                                             <button class="boxed-btn4 " type="submit">Subscribe</button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div> -->
+                                </form>
+                            <!-- </div> -->
                         </div>
                     </div>
                 </div>

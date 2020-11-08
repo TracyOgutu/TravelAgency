@@ -77,6 +77,12 @@ class Wishlist(models.Model):
     def __str__(self):
         return self.destination
 
+class Subscribe(models.Model):
+    name=models.ForeignKey(User,on_delete=models.CASCADE)
+    email=models.CharField(max_length=1000,null=True)
+    def __str__(self):
+        return self.name
+
 
 
 
