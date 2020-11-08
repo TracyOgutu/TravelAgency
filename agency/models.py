@@ -2,6 +2,7 @@ from django.db import models
 import cloudinary
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
+from tinymce.models import HTMLField
 
 # Create your models here.
 
@@ -42,6 +43,7 @@ class Destination(models.Model):
     address=models.CharField(max_length=30)
     pub_date = models.DateTimeField(auto_now_add=True)
     destination_image =cloudinary.models.CloudinaryField('image',null=True,blank=True)
+    description=HTMLField(blank=True,null=True)
 
     def __str__(self):
         return self.destname
@@ -81,7 +83,7 @@ class Subscribe(models.Model):
     name=models.ForeignKey(User,on_delete=models.CASCADE)
     email=models.CharField(max_length=1000,null=True)
     def __str__(self):
-        return self.name
+        return self.name.username
 
 
 

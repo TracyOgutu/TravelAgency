@@ -17,9 +17,7 @@ urlpatterns=[
     path('wishlist/',views.displaywishlist,name='displaywishlist'),
     url(r'addtowishlist/(\d+)',views.addtowishlist,name='addtowishlist'),
     url(r'deletefromwishlist/(\d+)',views.deletefromwishlist,name='deletefromwishlist'),
-    url(r'^subscribe/$',views.send_email, name="subscribe"),
-  
-
-   
+    url(r'^send_email/$',views.send_email, name="send_email"), 
+    url(r'^subscribe/$',views.subscribe, name="subscribe"), 
     
 ]

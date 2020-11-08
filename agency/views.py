@@ -10,10 +10,10 @@ from django.contrib import messages
 from getmac import get_mac_address as gma
 from django.contrib.auth.models import User
 import requests
-from django.core.mail.message import BadHeaderError
 from django.core.validators import validate_email
 from django.http import HttpResponse
-from django.core.mail import send_mail
+from django.core.mail import send_mail,BadHeaderError
+from django.views.decorators.csrf import csrf_protect
 
 # Create your views here.
 def welcome(request):
@@ -143,35 +143,8 @@ def deletefromwishlist(request,id):
     except ObjectDoesNotExist:
         raise Http404()
 
-# @login_required(login_url='/accounts/login/')
-# def subscribe(request):
-#     if request.user.is_authenticated:
-#         if request.method=="POST":
-#             useremail=request.POST.get("email")
-#             print('........................USER---EMAIL........................')
-#             print(useremail)
-#             try:
-#                 validate_email( useremail )
-#                 name=request.user
-#                 print('........................NAME --- SUBSCRIBER........................')
-#                 print(name)
-#                 subscribe_email(name,useremail)
-#                 new_subscriber=Subscribe(name=request.user,email=useremail)
-#                 new_subscriber.save()
-#                 messages.info(request, 'Successfully subscribed to Travel Agency! Please check your email')
-#                 return redirect('welcome')
-#             except ValidationError:
-#                 return False
-#             # except:
-#             #     messages.info(request,'Please enter a valid email address.')
-#             #     return redirect('welcome')
-#         else:
-#             messages.info(request,'Please try again. Something went wrong.')
-#             return redirect('welcome')
-#     else:
-#         return redirect('welcome')
-
 @login_required(login_url='/accounts/login/')
+@csrf_protect
 def send_email(request):
     subject = request.POST.get('subject', '')
     message = request.POST.get('message', '')
@@ -186,6 +159,29 @@ def send_email(request):
         # In reality we'd use a form class
         # to get proper validation errors.
         return HttpResponse('Make sure all fields are entered and valid.')
+
+@login_required(login_url='/accounts/login/')
+@csrf_protect
+def subscribe(request):
+    subject = 'Welcome to Travel Agency.'
+    message = 'Thank you for subscribing. Anticipate exciting updates on magical destinations! ' 
+    user_email=request.POST.get('useremail', '')
+    from_email = 'beastmater064@gmail.com'
+    if user_email:
+        try:
+            send_mail(subject, message, from_email, [user_email])
+        except BadHeaderError:
+            return HttpResponse('Invalid header found.')
+        new_subscriber=Subscribe(name=request.user,email=user_email)
+        new_subscriber.save()
+        messages.info(request, 'Successfully subscribed to Travel Agency! Please check your email')
+        return redirect('welcome')
+    else:
+        # In reality we'd use a form class
+        # to get proper validation errors.
+        return HttpResponse('Make sure all fields are entered and valid.')
+
+
 
 
 

@@ -145,6 +145,17 @@
         </div>
     </header>
     <!-- header-end -->
+    {%block messages%}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="margin-left:20%;color:brown">{{ message }}</li>
+        {% endfor %}
+    </ul>
+
+    {%endif%}
+    {%endblock%}
+    
     {%block slider%}
     <!-- slider_area_start -->
     <div class="slider_area">
@@ -194,16 +205,7 @@
     <!-- slider_area_end -->
     {%endblock%}
 
-    {%block messages%}
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="margin-left:20%;color:brown">{{ message }}</li>
-        {% endfor %}
-    </ul>
-
-    {%endif%}
-    {%endblock%}
+   
 
     {%block whereto%}
 
@@ -266,24 +268,10 @@
                         </div>
                         <div class="col-lg-7">
                             <!-- <div class="mail_form"> -->
-                                <form class="mail_form" action="{% url 'subscribe' %}" method="post">
+                                <form class="mail_form" action="{% url 'subscribe' %}" method="POST">
                                 {% csrf_token %}
-                                <input type="text" name="subject" placeholder="Subject">
-                                <input type="text" name="message" placeholder="Message">
-                                <input type="email" name="email" placeholder="Your email">
+                                <input type="email" name="useremail" placeholder="Your email">
                                 <button class="boxed-btn4 " type="submit">Subscribe</button>
-                                <!-- <div class="row no-gutters">
-                                    <div class="col-lg-9 col-md-8">
-                                        <div class="newsletter_field">
-                                            <input type="email" name="email" placeholder="Your email">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-4">
-                                        <div class="newsletter_btn">
-                                            <button class="boxed-btn4 " type="submit">Subscribe</button>
-                                        </div>
-                                    </div>
-                                </div> -->
                                 </form>
                             <!-- </div> -->
                         </div>

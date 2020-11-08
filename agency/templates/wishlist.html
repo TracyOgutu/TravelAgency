@@ -13,7 +13,7 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="form_area">
-                    <h3>WISHLIST</h3>
+                    <h3 style="margin-left: 17%;">WISHLIST DESTINATIONS</h3>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -47,7 +47,7 @@
                         </div>
                         <div class="content">
                             <p class="d-flex align-items-center">{{wish.destination.destname}}<a href="{% url 'destination' wish.destination.id %}">View</a> </p>
-                            <a href="{%url 'deletefromwishlist' wish.destination.id %}" class="boxed-btn3">Remove</a>
+                            <a href="{%url 'deletefromwishlist' wish.destination.id %}" class="boxed-btn4 " style="margin-top: 10%;">Remove</a>
                         </div>
                     </div>
                 </div>
