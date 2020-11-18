@@ -20,5 +20,12 @@ urlpatterns=[
     url(r'^send_email/$',views.send_email, name="send_email"), 
     url(r'^subscribe/$',views.subscribe, name="subscribe"), 
     url(r'^searchcountry/',views.search_country,name='searchcountry'),  
-     url(r'^searchdestination/',views.search_destination,name='searchdest'),
+    url(r'^searchdestination/',views.search_destination,name='searchdest'),
+    path('displaycart/',views.displaycart,name='displaycart'),
+    url(r'^makebooking/$',views.make_booking,name="makebooking"),
+    url(r'deletefrombooking/(\d+)',views.delete_from_booking,name='deletefrombooking'),
+    path('bookingsummary/',views.booking_summary,name='bookingsummary'),
+    url(r'^process_payment/$', views.process_payment, name='process_payment'),
+    url(r'^payment-done/$', views.payment_done, name='payment_done'),
+    url(r'payment-cancelled/$', views.payment_cancelled, name='payment_cancelled'),
 ]

@@ -13,7 +13,7 @@
         <div class="row align-items-center">
             <div class="col-lg-6">
                 <div class="form_area">
-                    <h3 style="margin-left: 17%;">WISHLIST DESTINATIONS</h3>
+                    <h3 style="margin-left: 17%;">CHECKOUT PAGE</h3>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -27,7 +27,6 @@
 
 {% block content %}
 {{block.super}}
-
     <!-- popular_destination_area_start  -->
     <div class="popular_destination_area">
         <div class="container">
@@ -36,36 +35,43 @@
                    
                 </div>
             </div>
-            {%if wishitems%}
+            {%if cart%}
+            
+               <h1>Total:{{cart.total}}</h1>
+                
+            {%endif%}
             <div class="row">
-                {%for wish in wishitems%}
                 <div class="col-lg-4 col-md-6">
-                    <form action="{% url 'makebooking' %}" method='post' enctype="multipart/form-data">
-                    {% csrf_token %}
+                   {%if book_dest%}
+                   {%for booking in book_dest%}
                     <div class="single_destination">
                         <div class="thumb">
                             <!-- {{dest.destination_image.url}} -->
-                            <img src="{{wish.destination.destination_image.url}}" alt="destphoto" height="250px" width="300px">
+                            <img src="{{booking.destination.destination_image.url}}" alt="destphoto" height="250px" width="300px">
                         </div>
                         <div class="content">
-                            <p class="d-flex align-items-center">{{wish.destination.destname}}<a href="{% url 'destination' wish.destination.id %}">View</a> </p>
-                            <a href="{%url 'deletefromwishlist' wish.destination.id %}" class="boxed-btn4 " style="margin-top: 10%;">Remove</a>
-
-                
-                            <td >                                                            
-                                <input type="text" id="dest_id" name="dest_id" style="visibility:hidden;" value="{{wish.destination.id}}">                            
-                                <input type="submit" class="btn btn-info" value="Book" id="addbutton">                            
-                            </td>  
-                        </div>
-                       
-                    </div>
-                    </form>
+                            <p class="d-flex align-items-center">Price:{{booking.destination.price}}</p>
+                            <p class="d-flex align-items-center">{{booking.destination.destname}}<a href="{% url 'destination' booking.destination.id %}">View</a> </p>
+                            <a href="{%url 'deletefrombooking' booking.destination.id %}" class="boxed-btn4 " style="margin-top: 10%;">Remove from booking</a>              
+                        </div>        
+                    </div>      
+                    {%endfor%}    
                 </div>
-                {%endfor%}             
+
+                <div>
+                    <div class="card" style="border: 1px solid #01A6A9;width:200px">
+                        <h4 class="text-center">Pay with PayPal</h4>
+                        {% csrf_token %}
+                        {{ form.render }} 
+                    </div>   
+                </div>
+                     
             </div>
+            
             {%else%}
+
             <div>
-                <h5>You haven't added a destination to your wishlist just yet</h5>
+                <h5>You haven't added a destination to your cart just yet</h5>
                 <a href="{%url 'alldest' %}" class="boxed-btn3">Explore Now</a>
             </div>
             {%endif%}

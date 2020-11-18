@@ -44,9 +44,9 @@
             <div class="col-lg-8" style="margin-bottom: 5%;">
                 <form class="mail_form" action="{% url 'send_email' %}" method="POST">
                     {% csrf_token %}
-                    <input type="text" name="subject" placeholder="Enter Subject">
-                    <input type="text" name="message" placeholder=" Enter Message">
-                    <input type="email" name="email" placeholder="Email">
+                    <input type="email" class="form-control" style="width:50%;" name="email" placeholder="Your Email">
+                    <input  type="text" class="form-control" style="width:50%;margin-top: 5%;"name="subject" placeholder="Enter Subject">
+                    <input type="text" class="form-control" style="margin-top: 5%;margin-bottom: 5%;"name="message" placeholder=" Enter Message">
                     <button class="boxed-btn4 " type="submit">Send</button>
                 </form>
             </div> 

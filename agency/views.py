@@ -1,5 +1,5 @@
-from django.shortcuts import render,redirect
-from .models import Destination,Country,Profile,Reviews,Wishlist,Subscribe
+from django.shortcuts import render,redirect,get_object_or_404
+from .models import Destination,Country,Profile,Reviews,Wishlist,Subscribe,Cart,BookedDest
 from django.db.models import Count
 from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist,ValidationError
@@ -13,8 +13,11 @@ import requests
 from django.core.validators import validate_email
 from django.http import HttpResponse
 from django.core.mail import send_mail,BadHeaderError
-from django.views.decorators.csrf import csrf_protect
-
+from django.views.decorators.csrf import csrf_protect,csrf_exempt
+from django.conf import settings
+import uuid 
+import random
+from paypal.standard.forms import PayPalPaymentsForm
 # Create your views here.
 def welcome(request):
     try:
@@ -208,6 +211,208 @@ def search_destination(request):
     else:
         message="You haven't searched for a destination"
         return render(request,'searchdest.html',{"message":message})
+
+@login_required(login_url='/accounts/login/')
+def displaycart(request):
+    try:
+        cart_items=Cart.objects.filter(user_mac=gma(),ordered=False)
+    except Cart.DoesNotExist:
+        cart_items=[]
+    
+    return render(request,'cartdisplay.html',{"cartitems":cart_items})
+
+@login_required(login_url='/accounts/login/')
+@csrf_protect
+def make_booking(request):
+    dest_id=request.POST.get("dest_id")
+    user_dest=Destination.objects.get(id=dest_id)
+    print('****************USER_DESTINATION******************')
+    print(user_dest)
+    try:
+        usercart=Cart.objects.get(user_mac=gma(),ordered=False)
+        if usercart.ordered==False:
+            destcart=usercart.dest.all()
+            all_items=[]
+            for onedest in destcart:
+                all_items.append(onedest.destname)
+            
+            if user_dest.destname in all_items:
+                messages.info(request,'Destination already exist.')
+                return redirect('welcome')
+            else:                       
+                new_booking=BookedDest(destination=user_dest,user_mac=gma())
+                new_booking.save()
+                sub_total=user_dest.price
+                usercart.dest.add(user_dest.id)
+                usercart.total+=sub_total
+                usercart.save()
+                messages.info(request,'The destination successfully added to cart.Continue exploring or click booking summary to proceed to payment')
+                return redirect('welcome')
+
+    except Cart.DoesNotExist:
+        new_booking=BookedDest(destination=user_dest,user_mac=gma())
+        new_booking.save()
+
+        sub_total=user_dest.price
+        new_cart=Cart(user_mac=gma(),total=sub_total)
+        new_cart.save()
+        new_cart.dest.add(user_dest)
+        new_cart.save()
+        messages.info(request,'The destination successfully added to your cart.Continue exploring or click booking summary to proceed to payment')
+        return redirect('welcome')  
+
+@login_required(login_url='/accounts/login/')
+@csrf_protect
+def delete_from_booking(request,id):
+    destination=Destination.objects.get(id=id)
+    item_tobe_deleted=BookedDest.objects.get(destination=id,user_mac=gma(),paid=False)
+    cost=destination.price
+
+    user_cart=Cart.objects.get(user_mac=gma(),ordered=False)
+    alldests=user_cart.dest.all()
+    if len(alldests)==1:
+        newtotal=0
+        user_cart.total=newtotal
+        user_cart.dest.remove(destination.id)
+        user_cart.delete()
+        item_tobe_deleted.delete()
+        messages.info(request,'You have cleared your cart')
+        return redirect('welcome')
+    else:
+        newtotal=user_cart.total-cost
+        user_cart.total=newtotal
+        user_cart.dest.remove(destination.id)
+        user_cart.save()
+        item_tobe_deleted.delete()
+
+        messages.info(request,'Item successfully deleted from your cart')
+        return redirect('welcome')
+@login_required(login_url='/accounts/login/')
+@csrf_protect
+def booking_summary(request):
+    try:
+        book_dest=BookedDest.objects.filter(user_mac=gma(),paid=False)
+    except BookedDest.DoesNotExist:
+        book_dest=[]
+
+    try:
+        cart_items=Cart.objects.filter(user_mac=gma(),ordered=False)
+    except Cart.DoesNotExist:
+        cart_items=[]
+    
+    if len(book_dest)<1:
+        messages.info(request,'You have not added anything to your cart.')
+        return redirect('welcome')
+    else:
+        return render(request,'bookingsummary.html',{"book_dest":book_dest,"cartitems":cart_items})
+
+@login_required(login_url='/accounts/login/')
+@csrf_exempt
+def process_payment(request):
+    #Converting Kenya shillings to US Dollars
+    API_KEY= settings.FIXER_ACCESS_KEY 
+    url="http://data.fixer.io/api/latest?access_key="+API_KEY+"&symbols=KES,USD"
+    response=requests.request("GET",url)
+    html=response.json()
+    kes=html['rates']['KES']
+    usd=html['rates']['USD']
+    final_usd=kes/usd
+
+    #Checking out
+    try:
+        book_dest=BookedDest.objects.filter(user_mac=gma(),paid=False)
+    except BookedDest.DoesNotExist:
+        book_dest=[]
+
+    try:
+        user_cart=Cart.objects.get(user_mac=gma(),ordered=False)
+        print('******************USER CART OBJECT***************')
+        
+        print(user_cart)
+        # setting mac address to profile
+        current_user=Profile.objects.get(editor=request.user)    
+        user_cart.user_mac=current_user.user_mac
+        current_user.save()
+    except Cart.DoesNotExist:
+        user_cart=[]
+
+    
+    total_in_usd=user_cart.total/final_usd
+    list_of_dests=[]
+    for dest in book_dest:
+        list_of_dests.append(dest.destination.destname)
+
+    host=request.get_host()
+    paypal_dict={
+        'business':settings.PAYPAL_RECEIVER_EMAIL,
+        'amount':'%.2f' % total_in_usd,
+        'item_name':'{}'.format(list_of_dests),
+        'invoice': str(random.randint(00000,99999)),
+        'currency_code':'USD',
+        'notify_url':'http://{}{}'.format(host,'-gdgdj-travel-kahndbfh-gshdnhdjf-ksndshdj'),
+        'return_url':'http://{}{}'.format(host,'/payment-done/'),
+        'cancel_return':'http://{}{}'.format(host,'/payment-cancelled/'),
+    }
+    form=PayPalPaymentsForm(initial=paypal_dict)
+    #End of paypal
+    return render(request,'checkout.html',{"form":form,"book_dest":book_dest,"cart":user_cart})
+
+
+@login_required(login_url='/accounts/login/')
+@csrf_exempt
+def payment_done(request):
+    user_cart=Cart.objects.get(user_mac=gma(),ordered=False)
+    book_dest=BookedDest.objects.filter(user_mac=gma(),paid=False)
+    user_cart.ordered=True
+    user_cart.receipt_no=uuid.uuid4().hex[:6].upper()
+    user_cart.payment_method="Paypal"
+    user_cart.save()
+
+    for dest in book_dest:
+        dest.paid=True
+        dest.save()
+    messages.info(request,'Your booking has been made successfully.Thank you for choosing Travel Agency')
+    return redirect('welcome')
+
+
+@login_required(login_url='/accounts/login/')
+@csrf_exempt
+def payment_cancelled(request):
+    messages.info(request,'Payment has been cancelled successfully')
+    return redirect('welcome')
+
+
+@login_required(login_url='/accounts/login/')
+@csrf_exempt
+def payment_error(request):
+    messages.info(request,'Your payment process incurred an error.Please contact us to report the matter.')
+    return redirect('welcome')
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+                
+
 
 
 

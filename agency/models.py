@@ -3,13 +3,15 @@ import cloudinary
 from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
-
+import string
+import random
 # Create your models here.
 
 class Profile(models.Model):
     profile_photo=cloudinary.models.CloudinaryField('image',null=True,blank=True)
     bio=models.CharField(max_length=100)
     editor=models.ForeignKey(User,on_delete=models.CASCADE)
+    user_mac=models.CharField(max_length=1000,default="empty")
     
     def __str__(self):
         return self.editor.username
@@ -44,6 +46,7 @@ class Destination(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     destination_image =cloudinary.models.CloudinaryField('image',null=True,blank=True)
     description=HTMLField(blank=True,null=True)
+    price=models.DecimalField(max_digits=6,decimal_places=2,null=True)
 
     def __str__(self):
         return self.destname
@@ -94,6 +97,35 @@ class Subscribe(models.Model):
     email=models.CharField(max_length=1000,null=True)
     def __str__(self):
         return self.name.username
+
+class Cart(models.Model):
+    user_mac=models.CharField(max_length=1000)
+    dest=models.ManyToManyField(Destination)
+    total=models.IntegerField(default=0)
+    updated=models.DateTimeField(auto_now=True)
+    timestamp=models.DateField(auto_now_add=True)
+    ordered=models.BooleanField(default=False)
+    receipt_no=models.CharField(null=True,blank=True,max_length=1000)
+    payment_method=models.CharField(default="Other",max_length=100)
+    phone_no=models.CharField(null=True,blank=True,max_length=100)
+    finished=models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user_mac
+
+    def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+        return ''.join(random.choice(chars)for _ in range(size))
+    
+
+class BookedDest(models.Model):
+    destination=models.ForeignKey(Destination,on_delete=models.CASCADE)
+    user_mac=models.CharField(max_length=1000)
+    paid=models.BooleanField(default=False)
+    date=models.DateTimeField(auto_now_add=True)
+    finished=models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.destination.destname
 
 
 
