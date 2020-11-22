@@ -28,7 +28,7 @@
 {% block content %}
 {{block.super}}
     <!-- popular_destination_area_start  -->
-    <div class="popular_destination_area">
+    <div class="popular_destination_area" style="margin-left: 11%;"> 
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6">
@@ -38,9 +38,8 @@
             {%if cartitems%}
             <div class="row">
                {%for cart in cartitems%}
+              
                 <div class="col-lg-4 col-md-6">
-                    <h1>Total:{{cart.total}}</h1>
-                    <h1>Last updated:{{cart.updated}}</h1>
                     {% for dest in cart.dest.all %}
                     <div class="single_destination">
                         <div class="thumb">
@@ -54,16 +53,23 @@
                         </div>        
                     </div>      
                     {% endfor %}
+                    
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h2>Cart Total <br> Kshs:{{cart.total}}</h2>
+                    <h2>Last updated:<br>{{cart.updated}}</h2>
                 </div>
                 {%endfor%}
-
-                <a href="{%url 'bookingsummary'%}" lass="boxed-btn4 " style="margin-top: 10%;">Proceed to booking summary</a>
+                    <div>
+                        <a href="{%url 'process_payment'%}" class="boxed-btn3 " style="margin-top: 10%;">Proceed to checkout</a>
+                    </div>
+              
 
             </div>
             
             {%else%}
 
-            <div>
+            <div style="margin-left: 9%;">
                 <h5>You haven't added a destination to your cart just yet</h5>
                 <a href="{%url 'alldest' %}" class="boxed-btn3">Explore Now</a>
             </div>

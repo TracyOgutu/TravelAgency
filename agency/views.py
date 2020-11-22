@@ -175,6 +175,7 @@ def subscribe(request):
             send_mail(subject, message, from_email, [user_email])
         except BadHeaderError:
             return HttpResponse('Invalid header found.')
+
         new_subscriber=Subscribe(name=request.user,email=user_email)
         new_subscriber.save()
         messages.info(request, 'Successfully subscribed to Travel Agency! Please check your email')
@@ -182,7 +183,8 @@ def subscribe(request):
     else:
         # In reality we'd use a form class
         # to get proper validation errors.
-        return HttpResponse('Make sure all fields are entered and valid.')
+        messages.info(request, 'You have not entered your email.Please try to subscribe again.')
+        return redirect('welcome')
 
 
 def search_country(request):
@@ -287,6 +289,7 @@ def delete_from_booking(request,id):
 
         messages.info(request,'Item successfully deleted from your cart')
         return redirect('welcome')
+
 @login_required(login_url='/accounts/login/')
 @csrf_protect
 def booking_summary(request):

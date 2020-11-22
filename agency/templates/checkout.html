@@ -28,7 +28,7 @@
 {% block content %}
 {{block.super}}
     <!-- popular_destination_area_start  -->
-    <div class="popular_destination_area">
+    <div class="popular_destination_area" style="margin-left: 11%;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6">
@@ -37,7 +37,7 @@
             </div>
             {%if cart%}
             
-               <h1>Total:{{cart.total}}</h1>
+               <h1>Final Total:<br> Ksh:{{cart.total}}</h1>
                 
             {%endif%}
             <div class="row">
@@ -59,7 +59,7 @@
                 </div>
 
                 <div>
-                    <div class="card" style="border: 1px solid #01A6A9;width:200px">
+                    <div class="card" style="border: 1px solid #01A6A9;width:200px;margin-top: 30%;">
                         <h4 class="text-center">Pay with PayPal</h4>
                         {% csrf_token %}
                         {{ form.render }} 
